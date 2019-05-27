@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace Surface
 {
+    struct Surface
+    {
+        public bool IsLake;
+        public bool Processed;
+    }
     class Coordinate
     {
         public int X;
@@ -15,18 +20,20 @@ namespace Surface
     class Program
     {
         static int cnt = 0;
-        static List<string> Detected = new List<string>();
         static List<Coordinate> coors = new List<Coordinate>();
         static void Main(string[] args)
         {
             int L = int.Parse(Console.ReadLine());
             int H = int.Parse(Console.ReadLine());
-            string[] map = new string[H];
+            Surface[,] map = new Surface[H, L];
 
             for (int i = 0; i < H; i++)
             {
                 string row = Console.ReadLine();
-                map[i] = row;
+                for (int j = 0; j < row.Length; j++)
+                {
+                    map[i, j] = new Surface() { IsLake = row[j] == 'O', Processed = false };
+                }
             }
             int N = int.Parse(Console.ReadLine());
             for (int i = 0; i < N; i++)
@@ -39,38 +46,51 @@ namespace Surface
 
             for (int i = 0; i < N; i++)
             {
-                IsLake(map,coors[i].X, coors[i].Y);
-                Console.WriteLine(Detected.Count);
-                Detected.Clear();
+                IsLake(map, coors[i].X, coors[i].Y);
+                Console.WriteLine(cnt);
+                cnt = 0;
+                DropProcessed(map);
             }
         }
 
-        static void IsLake(string[] map, int X, int Y)
+        static void IsLake(Surface[,] map, int X, int Y)
         {
-
-            if (map[Y][X] == '#')
+            if (!map[Y, X].IsLake)
             {
                 return;
             }
-            if (map[Y][X] == 'O' && !Detected.Contains($"{Y} {X}"))
+            if (map[Y, X].IsLake && !map[Y, X].Processed)
             {
-                Detected.Add($"{Y} {X}");
+                cnt++;
+                map[Y, X].Processed = true;
             }
-            if(!(map[Y].Length <= X + 1) && map[Y][X+1] == 'O' && !Detected.Contains($"{Y} {X + 1}"))
+            if (!(map.GetLength(1) <= X + 1) && map[Y, X + 1].IsLake && !map[Y, X + 1].Processed)
             {
                 IsLake(map, X + 1, Y);
             }
-            if (!(X - 1 < 0) && map[Y][X - 1] == 'O' && !Detected.Contains($"{Y} {X - 1}") )
+            if (!(X - 1 < 0) && map[Y, X - 1].IsLake && !map[Y, X - 1].Processed)
             {
                 IsLake(map, X - 1, Y);
+
             }
-            if(!(map.Length <= Y + 1) && map[Y+1][X] == 'O' && !Detected.Contains($"{Y+1} {X}"))
+            if (!(map.GetLength(0) <= Y + 1) && map[Y + 1, X].IsLake && !map[Y + 1, X].Processed)
             {
                 IsLake(map, X, Y + 1);
             }
-            if (!(Y - 1 < 0) && map[Y - 1][X] == 'O' && !Detected.Contains($"{Y - 1} {X}"))
+            if (!(Y - 1 < 0) && map[Y - 1, X].IsLake && !map[Y - 1, X].Processed)
             {
                 IsLake(map, X, Y - 1);
+            }
+        }
+
+        static void DropProcessed(Surface[,] surfaces)
+        {
+            for (int i = 0; i < surfaces.GetLength(0); i++)
+            {
+                for (int j = 0; j < surfaces.GetLength(1); j++)
+                {
+                    surfaces[i, j].Processed = false;
+                }
             }
         }
     }
