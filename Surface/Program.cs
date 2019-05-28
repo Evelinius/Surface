@@ -10,6 +10,7 @@ namespace Surface
     {
         public bool IsLake;
         public bool Processed;
+        public int LakeId;
     }
     class Coordinate
     {
@@ -21,6 +22,7 @@ namespace Surface
     {
         static int cnt = 0;
         static List<Coordinate> coors = new List<Coordinate>();
+        static Dictionary<int, int> Square = new Dictionary<int, int>();
         static void Main(string[] args)
         {
             int L = int.Parse(Console.ReadLine());
@@ -46,14 +48,26 @@ namespace Surface
 
             for (int i = 0; i < N; i++)
             {
-                IsLake(map, coors[i].X, coors[i].Y);
-                Console.WriteLine(cnt);
-                cnt = 0;
-                DropProcessed(map);
+                int Y = coors[i].Y;
+                int X = coors[i].X;
+                if (map[Y, X].Processed)
+                {
+
+                    Console.WriteLine(Square[map[Y, X].LakeId]);
+                }
+                else
+                {
+                    IsLake(map, X, Y, i);
+                    Console.WriteLine(cnt);
+                    Square.Add(i, cnt);
+                    cnt = 0;
+
+                }
+
             }
         }
 
-        static void IsLake(Surface[,] map, int X, int Y)
+        static void IsLake(Surface[,] map, int X, int Y, int id)
         {
             if (!map[Y, X].IsLake)
             {
@@ -63,34 +77,24 @@ namespace Surface
             {
                 cnt++;
                 map[Y, X].Processed = true;
+                map[Y, X].LakeId = id;
             }
             if (!(map.GetLength(1) <= X + 1) && map[Y, X + 1].IsLake && !map[Y, X + 1].Processed)
             {
-                IsLake(map, X + 1, Y);
+                IsLake(map, X + 1, Y, id);
             }
             if (!(X - 1 < 0) && map[Y, X - 1].IsLake && !map[Y, X - 1].Processed)
             {
-                IsLake(map, X - 1, Y);
+                IsLake(map, X - 1, Y, id);
 
             }
             if (!(map.GetLength(0) <= Y + 1) && map[Y + 1, X].IsLake && !map[Y + 1, X].Processed)
             {
-                IsLake(map, X, Y + 1);
+                IsLake(map, X, Y + 1, id);
             }
             if (!(Y - 1 < 0) && map[Y - 1, X].IsLake && !map[Y - 1, X].Processed)
             {
-                IsLake(map, X, Y - 1);
-            }
-        }
-
-        static void DropProcessed(Surface[,] surfaces)
-        {
-            for (int i = 0; i < surfaces.GetLength(0); i++)
-            {
-                for (int j = 0; j < surfaces.GetLength(1); j++)
-                {
-                    surfaces[i, j].Processed = false;
-                }
+                IsLake(map, X, Y - 1, id);
             }
         }
     }
