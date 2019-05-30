@@ -6,19 +6,6 @@ using System.Threading.Tasks;
 
 namespace Surface
 {
-
-    /*
-4
-4
-OOOO
-OOOO
-OOOO
-OOOO
-3
-0 0
-1 2
-2 1
-     */
     struct Surface
     {
         public bool IsLake;
@@ -43,31 +30,11 @@ OOOO
     class Program
     {
         static int H, L;
-        static int cnt = 0;
         static List<Coordinate> coors = new List<Coordinate>();
         static Dictionary<int, int> Squares = new Dictionary<int, int>();
-
-        static string printMap(Surface[,] map)
-        {
-            var res = "";
-            for (int i = 0; i < H; i++)
-            {
-                for (int j = 0; j < L; j++)
-                    res += (map[j, i].LakeId) >= 0
-                        ? map[j, i].LakeId.ToString()
-                        : (map[j, i].IsLake)
-                           ? "*"
-                           : "#";
-
-                res += "\n";
-            }
-            return res;
-        }
-
-        static int Algorithm (Surface[,] map, int x, int y, int lakeID)
+        static int Algorithm(Surface[,] map, int x, int y, int lakeID)
         {
             List<Coordinate> CoordinatesToProcess = new List<Coordinate>();
-
             CoordinatesToProcess.Add(new Coordinate(x, y));
             map[x, y].Processed = true;
             map[x, y].LakeId = lakeID;
@@ -142,8 +109,8 @@ OOOO
                     if (map[x, y].IsLake)
                     {
                         int square = Algorithm(map, x, y, i);
-                        Console.WriteLine(CoordinatesToProcess.Count);
-                        Squares.Add(i, CoordinatesToProcess.Count);
+                        Console.WriteLine(square);
+                        Squares.Add(i, square);
                     }
                     else
                     {
@@ -156,4 +123,3 @@ OOOO
 
     }
 }
-
