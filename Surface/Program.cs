@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace Surface
 {
@@ -13,29 +14,17 @@ namespace Surface
         public int LakeId;
 
     }
-    class Coordinate
-    {
-
-        public Coordinate(int x, int y)
-        {
-            X = x;
-            Y = y;
-        }
-
-
-        public int X;
-        public int Y;
-    }
+   
 
     class Program
     {
         static int H, L;
-        static List<Coordinate> coors = new List<Coordinate>();
+        static List<Point> coors = new List<Point>();
         static Dictionary<int, int> Squares = new Dictionary<int, int>();
         static int Algorithm(Surface[,] map, int x, int y, int lakeID)
         {
-            List<Coordinate> CoordinatesToProcess = new List<Coordinate>();
-            CoordinatesToProcess.Add(new Coordinate(x, y));
+            List<Point> CoordinatesToProcess = new List<Point>();
+            CoordinatesToProcess.Add(new Point (x, y));
             map[x, y].Processed = true;
             map[x, y].LakeId = lakeID;
 
@@ -46,25 +35,25 @@ namespace Surface
                 int ycurrent = coordinate.Y;
                 if ((L > xcurrent + 1) && map[xcurrent + 1, ycurrent].IsLake && !map[xcurrent + 1, ycurrent].Processed)
                 {
-                    CoordinatesToProcess.Add(new Coordinate(xcurrent + 1, ycurrent));
+                    CoordinatesToProcess.Add(new Point (xcurrent + 1, ycurrent));
                     map[xcurrent + 1, ycurrent].LakeId = lakeID;
                     map[xcurrent + 1, ycurrent].Processed = true;
                 }
                 if ((xcurrent - 1 >= 0) && map[xcurrent - 1, ycurrent].IsLake && !map[xcurrent - 1, ycurrent].Processed)
                 {
-                    CoordinatesToProcess.Add(new Coordinate(xcurrent - 1, ycurrent));
+                    CoordinatesToProcess.Add(new Point (xcurrent - 1, ycurrent));
                     map[xcurrent - 1, ycurrent].LakeId = lakeID;
                     map[xcurrent - 1, ycurrent].Processed = true;
                 }
                 if ((H > ycurrent + 1) && map[xcurrent, ycurrent + 1].IsLake && !map[xcurrent, ycurrent + 1].Processed)
                 {
-                    CoordinatesToProcess.Add(new Coordinate(xcurrent, ycurrent + 1));
+                    CoordinatesToProcess.Add(new Point (xcurrent, ycurrent + 1));
                     map[xcurrent, ycurrent + 1].LakeId = lakeID;
                     map[xcurrent, ycurrent + 1].Processed = true;
                 }
                 if ((ycurrent - 1 >= 0) && map[xcurrent, ycurrent - 1].IsLake && !map[xcurrent, ycurrent - 1].Processed)
                 {
-                    CoordinatesToProcess.Add(new Coordinate(xcurrent, ycurrent - 1));
+                    CoordinatesToProcess.Add(new Point (xcurrent, ycurrent - 1));
                     map[xcurrent, ycurrent - 1].LakeId = lakeID;
                     map[xcurrent, ycurrent - 1].Processed = true;
                 }
@@ -93,7 +82,7 @@ namespace Surface
                 string[] inputs = Console.ReadLine().Split(' ');
                 int X = int.Parse(inputs[0]);
                 int Y = int.Parse(inputs[1]);
-                coors.Add(new Coordinate(X, Y));
+                coors.Add(new Point (X, Y));
             }
 
             for (int i = 0; i < N; i++)
