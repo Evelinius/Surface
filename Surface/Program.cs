@@ -21,44 +21,46 @@ namespace Surface
         static Dictionary<int, int> Squares = new Dictionary<int, int>();
         static int Algorithm(Surface[,] map, int x, int y, int lakeId)
         {
-            List<Point> coordinatesToProcess = new List<Point>
-            {
-                new Point(x, y)
-            };
+            Queue<Point> coordinatesToProcess = new Queue<Point>();
+            coordinatesToProcess.Enqueue(new Point(x, y));
+            int cnt = 0;
             map[x, y].Processed = true;
             map[x, y].LakeId = lakeId;
 
-            for (int j = 0; j < coordinatesToProcess.Count; j++)
+            while (coordinatesToProcess.Count > 0)
             {
-                var coordinate = coordinatesToProcess[j];
+                var coordinate = coordinatesToProcess.Dequeue();
                 int xcurrent = coordinate.X;
                 int ycurrent = coordinate.Y;
+                cnt++;
+
                 if ((L > xcurrent + 1) && map[xcurrent + 1, ycurrent].IsLake && !map[xcurrent + 1, ycurrent].Processed)
                 {
-                    coordinatesToProcess.Add(new Point (xcurrent + 1, ycurrent));
+                    coordinatesToProcess.Enqueue(new Point(xcurrent + 1, ycurrent));
                     map[xcurrent + 1, ycurrent].LakeId = lakeId;
                     map[xcurrent + 1, ycurrent].Processed = true;
                 }
                 if ((xcurrent - 1 >= 0) && map[xcurrent - 1, ycurrent].IsLake && !map[xcurrent - 1, ycurrent].Processed)
                 {
-                    coordinatesToProcess.Add(new Point (xcurrent - 1, ycurrent));
+                    coordinatesToProcess.Enqueue(new Point(xcurrent - 1, ycurrent));
                     map[xcurrent - 1, ycurrent].LakeId = lakeId;
                     map[xcurrent - 1, ycurrent].Processed = true;
                 }
                 if ((H > ycurrent + 1) && map[xcurrent, ycurrent + 1].IsLake && !map[xcurrent, ycurrent + 1].Processed)
                 {
-                    coordinatesToProcess.Add(new Point (xcurrent, ycurrent + 1));
+                    coordinatesToProcess.Enqueue(new Point(xcurrent, ycurrent + 1));
                     map[xcurrent, ycurrent + 1].LakeId = lakeId;
                     map[xcurrent, ycurrent + 1].Processed = true;
                 }
                 if ((ycurrent - 1 >= 0) && map[xcurrent, ycurrent - 1].IsLake && !map[xcurrent, ycurrent - 1].Processed)
                 {
-                    coordinatesToProcess.Add(new Point (xcurrent, ycurrent - 1));
+                    coordinatesToProcess.Enqueue(new Point(xcurrent, ycurrent - 1));
                     map[xcurrent, ycurrent - 1].LakeId = lakeId;
                     map[xcurrent, ycurrent - 1].Processed = true;
                 }
             }
-            return coordinatesToProcess.Count;
+
+            return cnt;
         }
 
         static void Main(string[] args)
@@ -82,7 +84,7 @@ namespace Surface
                 string[] inputs = Console.ReadLine().Split(' ');
                 int x = int.Parse(inputs[0]);
                 int y = int.Parse(inputs[1]);
-                coors.Add(new Point (x, y));
+                coors.Add(new Point(x, y));
             }
 
             for (int i = 0; i < N; i++)
