@@ -30,33 +30,33 @@ namespace Surface
             while (coordinatesToProcess.Count > 0)
             {
                 var coordinate = coordinatesToProcess.Dequeue();
-                int xcurrent = coordinate.X;
-                int ycurrent = coordinate.Y;
+                int xCurrent = coordinate.X;
+                int yCurrent = coordinate.Y;
                 cnt++;
 
-                if ((L > xcurrent + 1) && map[xcurrent + 1, ycurrent].IsLake && !map[xcurrent + 1, ycurrent].Processed)
+                if ((L > xCurrent + 1) && map[xCurrent + 1, yCurrent].IsLake && !map[xCurrent + 1, yCurrent].Processed)
                 {
-                    coordinatesToProcess.Enqueue(new Point(xcurrent + 1, ycurrent));
-                    map[xcurrent + 1, ycurrent].LakeId = lakeId;
-                    map[xcurrent + 1, ycurrent].Processed = true;
+                    coordinatesToProcess.Enqueue(new Point(xCurrent + 1, yCurrent));
+                    map[xCurrent + 1, yCurrent].LakeId = lakeId;
+                    map[xCurrent + 1, yCurrent].Processed = true;
                 }
-                if ((xcurrent - 1 >= 0) && map[xcurrent - 1, ycurrent].IsLake && !map[xcurrent - 1, ycurrent].Processed)
+                if ((xCurrent - 1 >= 0) && map[xCurrent - 1, yCurrent].IsLake && !map[xCurrent - 1, yCurrent].Processed)
                 {
-                    coordinatesToProcess.Enqueue(new Point(xcurrent - 1, ycurrent));
-                    map[xcurrent - 1, ycurrent].LakeId = lakeId;
-                    map[xcurrent - 1, ycurrent].Processed = true;
+                    coordinatesToProcess.Enqueue(new Point(xCurrent - 1, yCurrent));
+                    map[xCurrent - 1, yCurrent].LakeId = lakeId;
+                    map[xCurrent - 1, yCurrent].Processed = true;
                 }
-                if ((H > ycurrent + 1) && map[xcurrent, ycurrent + 1].IsLake && !map[xcurrent, ycurrent + 1].Processed)
+                if ((H > yCurrent + 1) && map[xCurrent, yCurrent + 1].IsLake && !map[xCurrent, yCurrent + 1].Processed)
                 {
-                    coordinatesToProcess.Enqueue(new Point(xcurrent, ycurrent + 1));
-                    map[xcurrent, ycurrent + 1].LakeId = lakeId;
-                    map[xcurrent, ycurrent + 1].Processed = true;
+                    coordinatesToProcess.Enqueue(new Point(xCurrent, yCurrent + 1));
+                    map[xCurrent, yCurrent + 1].LakeId = lakeId;
+                    map[xCurrent, yCurrent + 1].Processed = true;
                 }
-                if ((ycurrent - 1 >= 0) && map[xcurrent, ycurrent - 1].IsLake && !map[xcurrent, ycurrent - 1].Processed)
+                if ((yCurrent - 1 >= 0) && map[xCurrent, yCurrent - 1].IsLake && !map[xCurrent, yCurrent - 1].Processed)
                 {
-                    coordinatesToProcess.Enqueue(new Point(xcurrent, ycurrent - 1));
-                    map[xcurrent, ycurrent - 1].LakeId = lakeId;
-                    map[xcurrent, ycurrent - 1].Processed = true;
+                    coordinatesToProcess.Enqueue(new Point(xCurrent, yCurrent - 1));
+                    map[xCurrent, yCurrent - 1].LakeId = lakeId;
+                    map[xCurrent, yCurrent - 1].Processed = true;
                 }
             }
 
